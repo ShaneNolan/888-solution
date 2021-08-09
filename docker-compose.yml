@@ -1,0 +1,38 @@
+version: "3.1"
+
+services:
+  mysql_db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: eightapp
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_HOST: localhost
+      MYSQL_TCP_PORT: 3307
+    command: --init-file /init.sql
+    volumes:
+      - "./volumes/mysql:/var/lib/mysql:rw"
+      - "./init.sql:/init.sql"
+    ports:
+      - 3307:3307
+    networks:
+      - app-tier
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_HOST=mysql_db
+      - DB_PORT=3307
+    tty: true
+    entrypoint: poetry run 888
+    depends_on:
+      - mysql_db
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
