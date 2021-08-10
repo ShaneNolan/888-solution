@@ -55,7 +55,7 @@ class BaseModel:
     table_name: str
     schema: Type[ISchema]
 
-    table_created: bool = False
+    _table_created: Dict[str, bool] = {}
 
     BLANK_QUERY: str = ''
 
@@ -129,11 +129,10 @@ class BaseModel:
             cursor.execute(
                 f'CREATE TABLE IF NOT EXISTS {self.table_name} (ID INTEGER PRIMARY KEY AUTO_INCREMENT, {table_columns})'
             )
-            self._table_created = True
+            self._table_created[self.table_name] = True
 
     def __init__(self) -> None:
-        self._table_created = False
-        if not self.table_created:
+        if not self._table_created.get(self.table_name):
             self._create_table_if_not_exists()
         self._query: str = BaseModel.BLANK_QUERY
         self._last_method_called: Optional[function] = None
