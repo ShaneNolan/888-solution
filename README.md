@@ -1,5 +1,7 @@
 # 888 Solution
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/f44f53cc78dbcd9ae069/maintainability)](https://codeclimate.com/github/ShaneNolan/888-solution/maintainability)
+
 ## Specifications
 
 Command-line CRUD application demonstrating the following functionalities:
